@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/widgets/app_button.dart';
-import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_text.dart';
-import '../../../../shared/widgets/app_text_field.dart';
+import '../widgets/meetup_form_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -37,28 +35,7 @@ class HomeScreen extends StatelessWidget {
 
             const SizedBox(height: 32),
 
-            AppCard(
-              child: Column(
-                children: [
-                  const AppTextField(
-                    hintText: 'Enter first location',
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  const AppTextField(
-                    hintText: 'Enter second location',
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  AppButton(
-                    text: 'Get Started',
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
+            const MeetupFormCard(),
           ],
         ),
       ),
