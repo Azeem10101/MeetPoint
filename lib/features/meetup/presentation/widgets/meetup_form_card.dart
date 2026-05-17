@@ -26,6 +26,7 @@ class MeetupFormCard extends StatelessWidget {
           AppTextField(
             hintText: 'Enter first location',
             controller: firstLocationController,
+            enabled: !isLoading,
           ),
 
           const SizedBox(height: 16),
@@ -33,6 +34,7 @@ class MeetupFormCard extends StatelessWidget {
           AppTextField(
             hintText: 'Enter second location',
             controller: secondLocationController,
+            enabled: !isLoading,
           ),
 
           const SizedBox(height: 24),

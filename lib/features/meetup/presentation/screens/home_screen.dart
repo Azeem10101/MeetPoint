@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     setState(() {
       isLoading = true;
+      meetupResult = null;
     });
 
     await Future.delayed(const Duration(seconds: 2));
@@ -115,6 +116,12 @@ class _HomeScreenState extends State<HomeScreen> {
               onGetStarted: handleGetStarted,
               isLoading: isLoading,
             ),
+
+            if (isLoading)
+              const Padding(
+                padding: EdgeInsets.only(top: 24),
+                child: Text('Loading new meetup result...'),
+              ),
 
             if (meetupResult != null) ...[
               const SizedBox(height: 24),
