@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/widgets/app_text.dart';
+
 import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/app_card.dart';
+import '../../../../shared/widgets/app_text.dart';
 import '../../../../shared/widgets/app_text_field.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -29,27 +31,33 @@ class HomeScreen extends StatelessWidget {
 
             const AppText(
               text:
-                'MeetPoint helps groups discover the most convenient location to meet.',
+                  'MeetPoint helps groups discover the most convenient location to meet.',
               fontSize: 16,
             ),
 
             const SizedBox(height: 32),
 
-            const AppTextField(
-              hintText: 'Enter first location',
-            ),
+            AppCard(
+              child: Column(
+                children: [
+                  const AppTextField(
+                    hintText: 'Enter first location',
+                  ),
 
-            const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-            const AppTextField(
-              hintText: 'Enter second location',
-            ),
+                  const AppTextField(
+                    hintText: 'Enter second location',
+                  ),
 
-            const SizedBox(height: 32),
+                  const SizedBox(height: 24),
 
-            AppButton(
-              text: 'Get Started',
-              onPressed: () {},
+                  AppButton(
+                    text: 'Get Started',
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ),
           ],
         ),
