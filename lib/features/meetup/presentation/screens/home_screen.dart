@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../shared/widgets/app_text.dart';
 import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/app_text_field.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -30,6 +31,18 @@ class HomeScreen extends StatelessWidget {
               text:
                 'MeetPoint helps groups discover the most convenient location to meet.',
               fontSize: 16,
+            ),
+
+            const SizedBox(height: 32),
+
+            const AppTextField(
+              hintText: 'Enter first location',
+            ),
+
+            const SizedBox(height: 16),
+
+            const AppTextField(
+              hintText: 'Enter second location',
             ),
 
             const SizedBox(height: 32),
