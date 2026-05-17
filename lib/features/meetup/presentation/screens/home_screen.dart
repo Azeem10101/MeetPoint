@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../shared/widgets/app_text.dart';
 import '../widgets/meetup_form_card.dart';
+import '../../data/models/location_model.dart';
+import '../../data/services/meetup_service.dart';
+import '../widgets/meetup_result_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,6 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
       TextEditingController();
 
   bool isLoading = false;
+
+  LocationModel? meetupResult;
 
   Future<void> handleGetStarted() async {
     final firstLocation = firstLocationController.text.trim();
@@ -39,12 +44,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
     await Future.delayed(const Duration(seconds: 2));
 
+    final firstMockLocation = LocationModel(
+      name: firstLocation,
+      latitude: 17.3850,
+      longitude: 78.4867,
+    );
+
+    final secondMockLocation = LocationModel(
+      name: secondLocation,
+      latitude: 17.4474,
+      longitude: 78.3762,
+    );
+
+    final calculatedMeetup =
+      MeetupService.calculateMidpoint(
+      firstLocation: firstMockLocation,
+      secondLocation: secondMockLocation,
+    );
+
     debugPrint('First Location: $firstLocation');
     debugPrint('Second Location: $secondLocation');
 
     setState(() {
+      meetupResult = calculatedMeetup;
       isLoading = false;
     });
+  }
+
+  @override
+  void dispose() {
+    firstLocationController.dispose();
+    secondLocationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -82,6 +113,14 @@ class _HomeScreenState extends State<HomeScreen> {
               onGetStarted: handleGetStarted,
               isLoading: isLoading,
             ),
+            
+            if (meetupResult != null) ...[
+              const SizedBox(height: 24),
+
+              MeetupResultCard(
+                meetupLocation: meetupResult!,
+              ),
+            ],
           ],
         ),
       ),
