@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../shared/widgets/app_text.dart';
-import '../widgets/meetup_form_card.dart';
 import '../../data/models/location_model.dart';
 import '../../data/services/meetup_service.dart';
+import '../widgets/meetup_form_card.dart';
 import '../widgets/meetup_result_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -56,14 +56,15 @@ class _HomeScreenState extends State<HomeScreen> {
       longitude: 78.3762,
     );
 
-    final calculatedMeetup =
-      MeetupService.calculateMidpoint(
+    final calculatedMeetup = MeetupService.calculateMidpoint(
       firstLocation: firstMockLocation,
       secondLocation: secondMockLocation,
     );
 
     debugPrint('First Location: $firstLocation');
     debugPrint('Second Location: $secondLocation');
+
+    if (!mounted) return;
 
     setState(() {
       meetupResult = calculatedMeetup;
@@ -75,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     firstLocationController.dispose();
     secondLocationController.dispose();
+
     super.dispose();
   }
 
@@ -113,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onGetStarted: handleGetStarted,
               isLoading: isLoading,
             ),
-            
+
             if (meetupResult != null) ...[
               const SizedBox(height: 24),
 
