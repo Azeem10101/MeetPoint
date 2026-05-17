@@ -8,12 +8,14 @@ class MeetupFormCard extends StatelessWidget {
   final TextEditingController firstLocationController;
   final TextEditingController secondLocationController;
   final VoidCallback onGetStarted;
+  final bool isLoading;
 
   const MeetupFormCard({
     super.key,
     required this.firstLocationController,
     required this.secondLocationController,
     required this.onGetStarted,
+    required this.isLoading,
   });
 
   @override
@@ -36,8 +38,8 @@ class MeetupFormCard extends StatelessWidget {
           const SizedBox(height: 24),
 
           AppButton(
-            text: 'Get Started',
-            onPressed: onGetStarted,
+            text: isLoading ? 'Loading...' : 'Get Started',
+            onPressed: isLoading ? () {} : onGetStarted,
           ),
         ],
       ),

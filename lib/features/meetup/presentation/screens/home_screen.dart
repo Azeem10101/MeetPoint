@@ -12,18 +12,40 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController firstLocationController =
-    TextEditingController();
+      TextEditingController();
 
   final TextEditingController secondLocationController =
-    TextEditingController();
-  
-  void handleGetStarted() {
-    final firstLocation = firstLocationController.text;
-    final secondLocation = secondLocationController.text;
+      TextEditingController();
+
+  bool isLoading = false;
+
+  Future<void> handleGetStarted() async {
+    final firstLocation = firstLocationController.text.trim();
+    final secondLocation = secondLocationController.text.trim();
+
+    if (firstLocation.isEmpty || secondLocation.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter both locations'),
+        ),
+      );
+
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 2));
 
     debugPrint('First Location: $firstLocation');
     debugPrint('Second Location: $secondLocation');
-}
+
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('MeetPoint'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
               firstLocationController: firstLocationController,
               secondLocationController: secondLocationController,
               onGetStarted: handleGetStarted,
+              isLoading: isLoading,
             ),
           ],
         ),
