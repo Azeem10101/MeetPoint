@@ -10,11 +10,27 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('MeetPoint'),
       ),
-      body: const Center(
-        child: AppText(
-          text: 'Welcome to MeetPoint',
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+
+            const AppText(
+              text: 'Find the Perfect Meetup Point',
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+            ),
+
+            const SizedBox(height: 12),
+
+            const AppText(
+              text:
+                'MeetPoint helps groups discover the most convenient location to meet.',
+              fontSize: 16,
+            ),
+          ],
         ),
       ),
     );
