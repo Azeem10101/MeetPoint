@@ -11,6 +11,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController firstLocationController =
+    TextEditingController();
+
+  final TextEditingController secondLocationController =
+    TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
             const SizedBox(height: 32),
 
-            const MeetupFormCard(),
+            MeetupFormCard(
+              firstLocationController: firstLocationController,
+              secondLocationController: secondLocationController,
+            ),
           ],
         ),
       ),

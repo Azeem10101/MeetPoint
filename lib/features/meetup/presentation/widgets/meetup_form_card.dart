@@ -5,21 +5,30 @@ import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_text_field.dart';
 
 class MeetupFormCard extends StatelessWidget {
-  const MeetupFormCard({super.key});
+  final TextEditingController firstLocationController;
+  final TextEditingController secondLocationController;
+
+  const MeetupFormCard({
+    super.key,
+    required this.firstLocationController,
+    required this.secondLocationController,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppCard(
       child: Column(
         children: [
-          const AppTextField(
+          AppTextField(
             hintText: 'Enter first location',
+            controller: firstLocationController,
           ),
 
           const SizedBox(height: 16),
 
-          const AppTextField(
+          AppTextField(
             hintText: 'Enter second location',
+            controller: secondLocationController,
           ),
 
           const SizedBox(height: 24),
