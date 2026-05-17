@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'features/meetup/presentation/screens/home_screen.dart';
 
 void main() {
   runApp(const MeetPointApp());
@@ -16,28 +17,6 @@ class MeetPointApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('MeetPoint'),
-      ),
-      body: const Center(
-        child: Text(
-          'Welcome to MeetPoint',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
     );
   }
 }
