@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'core/theme/app_theme.dart';
 import 'features/meetup/presentation/screens/home_screen.dart';
 
 void main() {
@@ -13,9 +15,7 @@ class MeetPointApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MeetPoint',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppTheme.lightTheme,
       home: const HomeScreen(),
     );
   }
