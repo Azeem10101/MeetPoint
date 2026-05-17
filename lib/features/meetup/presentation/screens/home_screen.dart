@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../shared/widgets/app_text.dart';
+import '../../../../shared/widgets/app_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,6 +17,13 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
+
+            const SizedBox(height: 32),
+
+            AppButton(
+              text: 'Get Started',
+              onPressed: () {},
+            ),
 
             const AppText(
               text: 'Find the Perfect Meetup Point',
