@@ -18,13 +18,6 @@ class HomeScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
 
-            const SizedBox(height: 32),
-
-            AppButton(
-              text: 'Get Started',
-              onPressed: () {},
-            ),
-
             const AppText(
               text: 'Find the Perfect Meetup Point',
               fontSize: 32,
@@ -37,6 +30,13 @@ class HomeScreen extends StatelessWidget {
               text:
                 'MeetPoint helps groups discover the most convenient location to meet.',
               fontSize: 16,
+            ),
+
+            const SizedBox(height: 32),
+
+            AppButton(
+              text: 'Get Started',
+              onPressed: () {},
             ),
           ],
         ),
