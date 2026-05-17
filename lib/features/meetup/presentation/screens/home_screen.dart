@@ -16,6 +16,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final TextEditingController secondLocationController =
     TextEditingController();
+  
+  void handleGetStarted() {
+    final firstLocation = firstLocationController.text;
+    final secondLocation = secondLocationController.text;
+
+    debugPrint('First Location: $firstLocation');
+    debugPrint('Second Location: $secondLocation');
+}
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
             MeetupFormCard(
               firstLocationController: firstLocationController,
               secondLocationController: secondLocationController,
+              onGetStarted: handleGetStarted,
             ),
           ],
         ),

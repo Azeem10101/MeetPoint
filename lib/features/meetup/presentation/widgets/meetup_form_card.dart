@@ -7,11 +7,13 @@ import '../../../../shared/widgets/app_text_field.dart';
 class MeetupFormCard extends StatelessWidget {
   final TextEditingController firstLocationController;
   final TextEditingController secondLocationController;
+  final VoidCallback onGetStarted;
 
   const MeetupFormCard({
     super.key,
     required this.firstLocationController,
     required this.secondLocationController,
+    required this.onGetStarted,
   });
 
   @override
@@ -35,7 +37,7 @@ class MeetupFormCard extends StatelessWidget {
 
           AppButton(
             text: 'Get Started',
-            onPressed: () {},
+            onPressed: onGetStarted,
           ),
         ],
       ),
