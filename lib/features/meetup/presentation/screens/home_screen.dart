@@ -45,19 +45,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
     await Future.delayed(const Duration(seconds: 2));
 
-    final firstMockLocation = LocationModel(
-      name: firstLocation,
-      latitude: 17.3850,
-      longitude: 78.4867,
+    final firstMockLocation =
+        MeetupService.getLocationCoordinates(
+      firstLocation,
     );
 
-    final secondMockLocation = LocationModel(
-      name: secondLocation,
-      latitude: 17.4474,
-      longitude: 78.3762,
+    final secondMockLocation =
+        MeetupService.getLocationCoordinates(
+      secondLocation,
     );
 
-    final calculatedMeetup = MeetupService.calculateMidpoint(
+    if (firstMockLocation == null ||
+        secondMockLocation == null) {
+      if (!mounted) return;
+
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'One or both locations are not supported yet',
+          ),
+        ),
+      );
+
+      return;
+    }
+
+    final calculatedMeetup =
+        MeetupService.calculateMidpoint(
       firstLocation: firstMockLocation,
       secondLocation: secondMockLocation,
     );
@@ -111,8 +129,10 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 32),
 
             MeetupFormCard(
-              firstLocationController: firstLocationController,
-              secondLocationController: secondLocationController,
+              firstLocationController:
+                  firstLocationController,
+              secondLocationController:
+                  secondLocationController,
               onGetStarted: handleGetStarted,
               isLoading: isLoading,
             ),
@@ -120,7 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
             if (isLoading)
               const Padding(
                 padding: EdgeInsets.only(top: 24),
-                child: Text('Loading new meetup result...'),
+                child: Text(
+                  'Loading new meetup result...',
+                ),
               ),
 
             if (meetupResult != null) ...[
