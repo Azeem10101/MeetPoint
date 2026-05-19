@@ -4,10 +4,18 @@ import '../models/location_model.dart';
 class MeetupService {
   static LocationModel? getLocationCoordinates(String locationName) {
     final normalizedLocation =
-        locationName.trim().toLowerCase();
+      locationName
+        .trim()
+        .toLowerCase();
+
+final resolvedLocation =
+    locationAliases[
+        normalizedLocation
+    ] ??
+    normalizedLocation;
 
     final locationData =
-        mockLocations[normalizedLocation];
+        mockLocations[resolvedLocation];
 
     if (locationData == null) {
       return null;

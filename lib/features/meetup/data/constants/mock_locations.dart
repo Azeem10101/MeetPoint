@@ -20,3 +20,17 @@ const Map<String, Map<String, double>> mockLocations = {
     'lng': 72.8777,
   },
 };
+
+const Map<String, String> locationAliases = {
+  'hyd': 'hyderabad',
+  'hydrabad': 'hyderabad',
+  'hyderbad': 'hyderabad',
+
+  'vizag': 'visakhapatnam',
+  'viz': 'visakhapatnam',
+
+  'blr': 'bangalore',
+  'bengaluru': 'bangalore',
+
+  'bombay': 'mumbai',
+};
