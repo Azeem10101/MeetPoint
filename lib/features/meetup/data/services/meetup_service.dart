@@ -44,4 +44,24 @@ final resolvedLocation =
       longitude: midpointLongitude,
     );
   }
+
+  static LocationModel calculateGroupMidpoint(
+    List<LocationModel> locations,
+  ) {
+    final totalLatitude = locations.fold<double>(
+      0,
+      (total, location) => total + location.latitude,
+    );
+
+    final totalLongitude = locations.fold<double>(
+      0,
+      (total, location) => total + location.longitude,
+    );
+
+    return LocationModel(
+      name: 'Calculated Midpoint',
+      latitude: totalLatitude / locations.length,
+      longitude: totalLongitude / locations.length,
+    );
+  }
 }

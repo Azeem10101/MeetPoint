@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../shared/widgets/app_text.dart';
 import '../../data/models/location_model.dart';
 import '../../data/services/meetup_service.dart';
+import '../../logic/meetup_controller.dart';
 import '../widgets/meetup_form_card.dart';
 import '../widgets/meetup_result_card.dart';
 
@@ -14,54 +15,48 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController firstLocationController =
-      TextEditingController();
-
-  final TextEditingController secondLocationController =
-      TextEditingController();
-
-  bool isLoading = false;
+  late final MeetupController meetupController;
 
   LocationModel? meetupResult;
 
-  Future<void> handleGetStarted() async {
-    final firstLocation = firstLocationController.text.trim();
-    final secondLocation = secondLocationController.text.trim();
+  @override
+  void initState() {
+    super.initState();
 
-    if (firstLocation.isEmpty || secondLocation.isEmpty) {
+    meetupController = MeetupController();
+  }
+
+  Future<void> handleGetStarted() async {
+    final locationTexts = meetupController.state.participantInputs
+        .map((input) => input.locationText.trim())
+        .toList();
+
+    if (locationTexts.any((locationText) => locationText.isEmpty)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please enter both locations'),
+          content: Text('Please enter all locations'),
         ),
       );
 
       return;
     }
 
+    meetupController.setLoading(true);
+
     setState(() {
-      isLoading = true;
       meetupResult = null;
     });
 
     await Future.delayed(const Duration(seconds: 2));
 
-    final firstMockLocation =
-        MeetupService.getLocationCoordinates(
-      firstLocation,
-    );
+    final resolvedLocations = locationTexts
+        .map(MeetupService.getLocationCoordinates)
+        .toList();
 
-    final secondMockLocation =
-        MeetupService.getLocationCoordinates(
-      secondLocation,
-    );
-
-    if (firstMockLocation == null ||
-        secondMockLocation == null) {
+    if (resolvedLocations.any((location) => location == null)) {
       if (!mounted) return;
 
-      setState(() {
-        isLoading = false;
-      });
+      meetupController.setLoading(false);
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -74,27 +69,22 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
 
-    final calculatedMeetup =
-        MeetupService.calculateMidpoint(
-      firstLocation: firstMockLocation,
-      secondLocation: secondMockLocation,
+    final calculatedMeetup = MeetupService.calculateGroupMidpoint(
+      resolvedLocations.cast<LocationModel>(),
     );
-
-    debugPrint('First Location: $firstLocation');
-    debugPrint('Second Location: $secondLocation');
 
     if (!mounted) return;
 
+    meetupController.setLoading(false);
+
     setState(() {
       meetupResult = calculatedMeetup;
-      isLoading = false;
     });
   }
 
   @override
   void dispose() {
-    firstLocationController.dispose();
-    secondLocationController.dispose();
+    meetupController.dispose();
 
     super.dispose();
   }
@@ -128,22 +118,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
             const SizedBox(height: 32),
 
-            MeetupFormCard(
-              firstLocationController:
-                  firstLocationController,
-              secondLocationController:
-                  secondLocationController,
-              onGetStarted: handleGetStarted,
-              isLoading: isLoading,
+            AnimatedBuilder(
+              animation: meetupController,
+              builder: (context, child) {
+                final state = meetupController.state;
+
+                return MeetupFormCard(
+                  participantInputs: state.participantInputs,
+                  onLocationChanged:
+                      meetupController.updateParticipantLocationText,
+                  onAddParticipant:
+                      meetupController.addParticipantInput,
+                  onRemoveParticipant:
+                      meetupController.removeParticipantInput,
+                  onGetStarted: handleGetStarted,
+                  isLoading: state.isLoading,
+                  canRemoveParticipants: state.participantInputs.length >
+                      MeetupController.minimumParticipantCount,
+                );
+              },
             ),
 
-            if (isLoading)
-              const Padding(
-                padding: EdgeInsets.only(top: 24),
-                child: Text(
-                  'Loading new meetup result...',
-                ),
-              ),
+            AnimatedBuilder(
+              animation: meetupController,
+              builder: (context, child) {
+                if (!meetupController.state.isLoading) {
+                  return const SizedBox.shrink();
+                }
+
+                return const Padding(
+                  padding: EdgeInsets.only(top: 24),
+                  child: Text(
+                    'Loading new meetup result...',
+                  ),
+                );
+              },
+            ),
 
             if (meetupResult != null) ...[
               const SizedBox(height: 24),

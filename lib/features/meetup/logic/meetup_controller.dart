@@ -3,15 +3,75 @@ import 'package:flutter/foundation.dart';
 import '../domain/models/meetup_plan.dart';
 import '../domain/models/participant.dart';
 import 'meetup_state.dart';
+import 'participant_input_state.dart';
 
 class MeetupController extends ChangeNotifier {
+  static const int minimumParticipantCount = 2;
+
   MeetupState _state;
+  int _nextInputId;
 
   MeetupController({
     MeetupState? initialState,
-  }) : _state = initialState ?? MeetupState.initial();
+  })  : _state = initialState ?? MeetupState.initial(),
+        _nextInputId =
+            (initialState?.participantInputs.length ?? minimumParticipantCount) +
+                1;
 
   MeetupState get state => _state;
+
+  void addParticipantInput() {
+    final input = ParticipantInputState(
+      id: 'participant-input-$_nextInputId',
+    );
+    _nextInputId += 1;
+
+    _setState(
+      _state.copyWith(
+        participantInputs: [
+          ..._state.participantInputs,
+          input,
+        ],
+        clearPlan: true,
+        clearError: true,
+      ),
+    );
+  }
+
+  void updateParticipantLocationText({
+    required String inputId,
+    required String locationText,
+  }) {
+    _setState(
+      _state.copyWith(
+        participantInputs: _state.participantInputs.map((input) {
+          if (input.id != inputId) {
+            return input;
+          }
+
+          return input.copyWith(locationText: locationText);
+        }).toList(),
+        clearPlan: true,
+        clearError: true,
+      ),
+    );
+  }
+
+  void removeParticipantInput(String inputId) {
+    if (_state.participantInputs.length <= minimumParticipantCount) {
+      return;
+    }
+
+    _setState(
+      _state.copyWith(
+        participantInputs: _state.participantInputs
+            .where((input) => input.id != inputId)
+            .toList(),
+        clearPlan: true,
+        clearError: true,
+      ),
+    );
+  }
 
   void setParticipants(List<Participant> participants) {
     _setState(
